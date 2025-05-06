@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -45,6 +46,24 @@ public class DiaryService {
         diary.setText(text);
         diary.setDate(date);
         diaryRepository.save(diary);
+     }
+
+     public List<Diary> readDiary(LocalDate date) {
+        return diaryRepository.findAllByDate(date);
+     }
+
+     public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
+        return diaryRepository.findAllByDateBetween(startDate, endDate);
+     }
+
+     public void updateDiary(LocalDate date, String text) {
+        Diary newDiary = diaryRepository.getFirstByDate(date);
+        newDiary.setText(text);
+        diaryRepository.save(newDiary);
+     }
+
+     public void deleteDiary(LocalDate date){
+        diaryRepository.deleteByDate(date);
      }
 
     // 외부 OpenWeatherMap API를 호출해서 날씨 정보를 문자열로 받아오는 메서드
